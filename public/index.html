@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Random Mode — three useless machines, made with love</title>
+<meta name="description" content="Three tiny AI tools with personality: an excuse translator, a code mirror, and a never-launch excuse generator." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+
+<div class="grain"></div>
+
+<div class="lang-switch" role="group" aria-label="Language / Idioma">
+  <button class="lang-btn active" data-lang="en">EN</button>
+  <button class="lang-btn" data-lang="es">ES</button>
+</div>
+
+<header class="hero">
+  <span class="tag">FUN BUILD · NERDCONF</span>
+  <h1>RANDOM MODE</h1>
+  <p class="subtitle" data-i18n="subtitle">Three completely useless machines, made with love. Pick one.</p>
+</header>
+
+<nav class="tabs" role="tablist" aria-label="Choose a tool">
+  <button class="tab active" data-mode="excuses" role="tab" aria-selected="true">
+    <span data-i18n="tab-excuses">🎭 Excuse Translator</span>
+  </button>
+  <button class="tab" data-mode="code-mirror" role="tab" aria-selected="false">
+    <span data-i18n="tab-code-mirror">💻 Code Mirror</span>
+  </button>
+  <button class="tab" data-mode="launch-excuse" role="tab" aria-selected="false">
+    <span data-i18n="tab-launch-excuse">🚀 Never-Launch Excuse</span>
+  </button>
+</nav>
+
+<main class="panel">
+
+  <!-- Panel: Excuse Translator -->
+  <section class="mode-panel active" data-panel="excuses">
+    <h2 data-i18n="h-excuses">Excuse Translator</h2>
+    <p class="hint" data-i18n="hint-excuses">Write your real excuse. Pick who's going to "translate" it.</p>
+    <div class="personas">
+      <button class="persona-btn active" data-persona="jefe">
+        <span data-i18n="persona-jefe">😐 Passive-aggressive boss</span>
+      </button>
+      <button class="persona-btn" data-persona="abuela">
+        <span data-i18n="persona-abuela">😭 Dramatic grandma</span>
+      </button>
+      <button class="persona-btn" data-persona="ia">
+        <span data-i18n="persona-ia">🤖 Existentialist AI</span>
+      </button>
+    </div>
+    <textarea data-input="excuses" maxlength="600" data-i18n-placeholder="placeholder-excuses" placeholder="Ex: I was late because I got caught up making mate..."></textarea>
+    <button class="go-btn" data-go="excuses"><span data-i18n="btn-excuses">Translate excuse →</span></button>
+    <div class="result" data-result="excuses" hidden></div>
+  </section>
+
+  <!-- Panel: Code Mirror -->
+  <section class="mode-panel" data-panel="code-mirror">
+    <h2 data-i18n="h-code-mirror">Code Mirror</h2>
+    <p class="hint" data-i18n="hint-code-mirror">Paste a snippet of code. It'll tell you, in first person, how it feels.</p>
+    <textarea data-input="code-mirror" maxlength="600" placeholder="function totallyNormal(x) { return x + x + x; }"></textarea>
+    <button class="go-btn" data-go="code-mirror"><span data-i18n="btn-code-mirror">Ask how it feels →</span></button>
+    <div class="result" data-result="code-mirror" hidden></div>
+  </section>
+
+  <!-- Panel: Never-Launch Excuse -->
+  <section class="mode-panel" data-panel="launch-excuse">
+    <h2 data-i18n="h-launch-excuse">Never-Launch Excuse</h2>
+    <p class="hint" data-i18n="hint-launch-excuse">Tell it about that project you never publish.</p>
+    <textarea data-input="launch-excuse" maxlength="600" data-i18n-placeholder="placeholder-launch" placeholder="Ex: a habit-tracking app I've been building for 8 months and never shipped"></textarea>
+    <button class="go-btn" data-go="launch-excuse"><span data-i18n="btn-launch-excuse">Give me the perfect excuse →</span></button>
+    <div class="result" data-result="launch-excuse" hidden></div>
+  </section>
+
+</main>
+
+<footer>
+  <p data-i18n="footer">Made for <strong>Burning Token</strong> · NERDCONF · 2026</p>
+</footer>
+
+<script src="/script.js"></script>
+</body>
+</html>
