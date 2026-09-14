@@ -322,6 +322,20 @@ footer {
   z-index: 1;
 }
 
+footer .credit {
+  margin-top: 4px;
+  opacity: 0.85;
+}
+
+footer .credit a {
+  color: var(--paper);
+  text-decoration: underline;
+}
+
+footer .credit a:hover {
+  opacity: 0.8;
+}
+
 @media (max-width: 480px) {
   .mode-panel { padding: 20px; }
   .tab { font-size: 0.85rem; padding: 10px 14px; }
