@@ -188,15 +188,33 @@ function resetPanel(mode) {
 tabs.forEach((tab) => {
   tab.addEventListener('click', () => {
     const mode = tab.dataset.mode;
+    const alreadyActive = tab.classList.contains('active');
     tabs.forEach((t) => {
       t.classList.toggle('active', t === tab);
       t.setAttribute('aria-selected', t === tab ? 'true' : 'false');
     });
     panels.forEach((p) => p.classList.toggle('active', p.dataset.panel === mode));
-    // Reset every panel so no tab shows leftover input/results from a
-    // previous round when you come back to it.
-    panels.forEach((p) => resetPanel(p.dataset.panel));
+    // Only reset when actually switching to a different tab — clicking the
+    // tab you're already on shouldn't wipe what you were doing.
+    if (!alreadyActive) {
+      panels.forEach((p) => resetPanel(p.dataset.panel));
+    }
   });
+});
+
+// Hide a mode's result (without touching the textarea) — used whenever the
+// input is being changed so a stale result never sits next to text it
+// doesn't correspond to anymore.
+function hideResult(mode) {
+  const resultBox = document.querySelector(`[data-result="${mode}"]`);
+  if (resultBox) {
+    resultBox.hidden = true;
+    resultBox.classList.remove('error');
+  }
+}
+
+document.querySelectorAll('textarea[data-input]').forEach((textarea) => {
+  textarea.addEventListener('input', () => hideResult(textarea.dataset.input));
 });
 
 // ---------- Persona selector (excuses panel only) ----------
@@ -217,6 +235,7 @@ document.querySelectorAll('.example-btn').forEach((btn) => {
     const textarea = document.querySelector(`textarea[data-input="${mode}"]`);
     textarea.value = pickExample(mode, currentLang);
     textarea.focus();
+    hideResult(mode);
   });
 });
 
