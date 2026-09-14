@@ -63,18 +63,60 @@ const translations = {
 // ---------- Example inputs per mode/language ----------
 const examples = {
   excuses: {
-    en: "I missed the meeting because my cat unplugged my laptop mid-presentation.",
-    es: "Falté a la reunión porque mi gato desenchufó la notebook en medio de la presentación.",
+    en: [
+      "I missed the meeting because my cat unplugged my laptop mid-presentation.",
+      "I was late because I got stuck behind a parade I didn't know existed.",
+      "I forgot to reply to your email because my inbox achieved sentience and is on strike.",
+      "I skipped the gym because my shoes felt personally attacked by the treadmill.",
+    ],
+    es: [
+      "Falté a la reunión porque mi gato desenchufó la notebook en medio de la presentación.",
+      "Llegué tarde porque me quedé atrapada detrás de un desfile que no sabía que existía.",
+      "No te contesté el mensaje porque mi bandeja de entrada cobró conciencia propia y está en huelga.",
+      "No fui al gimnasio porque mis zapatillas se sintieron atacadas personalmente por la cinta.",
+    ],
   },
   'code-mirror': {
-    en: "function totallyFine(arr) {\n  for (var i = 0; i < arr.length; i++) {\n    for (var j = 0; j < arr.length; j++) {\n      if (arr[i] === arr[j] && i !== j) console.log('dup');\n    }\n  }\n}",
-    es: "function totallyFine(arr) {\n  for (var i = 0; i < arr.length; i++) {\n    for (var j = 0; j < arr.length; j++) {\n      if (arr[i] === arr[j] && i !== j) console.log('dup');\n    }\n  }\n}",
+    en: [
+      "function totallyFine(arr) {\n  for (var i = 0; i < arr.length; i++) {\n    for (var j = 0; j < arr.length; j++) {\n      if (arr[i] === arr[j] && i !== j) console.log('dup');\n    }\n  }\n}",
+      "let data;\ntry {\n  data = JSON.parse(response);\n} catch (e) {\n  // ignore\n}",
+      "const isEven = (n) => n % 2 == 0 ? true : n % 2 != 0 ? false : null;",
+    ],
+    es: [
+      "function totallyFine(arr) {\n  for (var i = 0; i < arr.length; i++) {\n    for (var j = 0; j < arr.length; j++) {\n      if (arr[i] === arr[j] && i !== j) console.log('dup');\n    }\n  }\n}",
+      "let data;\ntry {\n  data = JSON.parse(response);\n} catch (e) {\n  // ignore\n}",
+      "const isEven = (n) => n % 2 == 0 ? true : n % 2 != 0 ? false : null;",
+    ],
   },
   'launch-excuse': {
-    en: "A habit-tracking app I've been building for 8 months and never shipped.",
-    es: "Una app de hábitos que hago hace 8 meses y nunca subí a la tienda.",
+    en: [
+      "A habit-tracking app I've been building for 8 months and never shipped.",
+      "A newsletter I've been meaning to start since January.",
+      "A portfolio redesign that's been \"almost done\" for a year.",
+      "A game prototype sitting in a folder called final_final_v3.",
+    ],
+    es: [
+      "Una app de hábitos que hago hace 8 meses y nunca subí a la tienda.",
+      "Un newsletter que vengo posponiendo desde enero.",
+      "Un rediseño de mi portfolio que está \"casi listo\" hace un año.",
+      "Un prototipo de juego guardado en una carpeta llamada final_final_v3.",
+    ],
   },
 };
+
+// Avoid repeating the same example twice in a row per mode.
+const lastExampleIndex = {};
+
+function pickExample(mode, lang) {
+  const list = examples[mode][lang] || examples[mode].en;
+  if (list.length === 1) return list[0];
+  let index;
+  do {
+    index = Math.floor(Math.random() * list.length);
+  } while (index === lastExampleIndex[mode]);
+  lastExampleIndex[mode] = index;
+  return list[index];
+}
 
 // ---------- Playful "thinking" messages ----------
 const thinkingMessages = {
@@ -154,7 +196,7 @@ document.querySelectorAll('.example-btn').forEach((btn) => {
   btn.addEventListener('click', () => {
     const mode = btn.dataset.example;
     const textarea = document.querySelector(`textarea[data-input="${mode}"]`);
-    textarea.value = examples[mode][currentLang] || examples[mode].en;
+    textarea.value = pickExample(mode, currentLang);
     textarea.focus();
   });
 });
