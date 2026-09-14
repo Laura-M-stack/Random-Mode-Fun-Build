@@ -105,8 +105,8 @@ function buildMessages(mode, input, persona, lang) {
   if (mode === 'launch-excuse') {
     const system =
       L === 'es'
-        ? 'Te dan el nombre o la descripcion breve de un proyecto personal sin terminar. Generas, con humor exagerado, la excusa perfecta y ridicula para seguir sin publicarlo, en tono comprensivo pero absurdo, como si fuera totalmente razonable procrastinar para siempre. Maximo 4 lineas, en espanol neutro, sin comillas ni explicaciones.'
-        : "You're given the name or a short description of an unfinished personal project. Generate, with exaggerated humor, the perfect and ridiculous excuse to keep never publishing it, in an understanding but absurd tone, as if procrastinating forever were totally reasonable. Maximum 4 lines, in English, no quotes or explanations.";
+        ? 'Te dan el nombre o la descripcion breve de un proyecto personal sin terminar. Generas, con humor exagerado, la excusa perfecta y ridicula para seguir sin publicarlo. Escribila en PRIMERA PERSONA, como si vos (el dueño del proyecto) la estuvieras diciendo en voz alta para justificarte (ej: arranca con algo como "No lo publiqué porque..." o "Todavia no porque..."). Tono comprensivo con vos mismo pero absurdo, como si procrastinar para siempre fuera totalmente razonable. Maximo 4 lineas, en espanol neutro, sin comillas ni explicaciones.'
+        : "You're given the name or a short description of an unfinished personal project. Generate, with exaggerated humor, the perfect and ridiculous excuse to keep never publishing it. Write it in FIRST PERSON, as if you (the project's owner) were saying it out loud to justify yourself (e.g. start with something like \"I haven't shipped it because...\" or \"Not yet, because...\"). Self-understanding but absurd tone, as if procrastinating forever were totally reasonable. Maximum 4 lines, in English, no quotes or explanations.";
     return [
       { role: 'system', content: system },
       { role: 'user', content: input },
