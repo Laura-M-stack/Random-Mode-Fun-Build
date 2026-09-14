@@ -55,8 +55,15 @@
       </button>
     </div>
     <textarea data-input="excuses" maxlength="600" data-i18n-placeholder="placeholder-excuses" placeholder="Ex: I was late because I got caught up making mate..."></textarea>
+    <div class="action-row">
+      <button class="example-btn" data-example="excuses"><span data-i18n="example-btn">✨ Try an example</span></button>
+      <span class="kbd-hint" data-i18n="kbd-hint">Enter to submit · Shift+Enter for a new line</span>
+    </div>
     <button class="go-btn" data-go="excuses"><span data-i18n="btn-excuses">Translate excuse →</span></button>
-    <div class="result" data-result="excuses" hidden></div>
+    <div class="result" data-result="excuses" hidden>
+      <p class="result-text" data-result-text></p>
+      <button class="copy-btn" data-copy><span data-i18n="copy-btn">📋 Copy</span></button>
+    </div>
   </section>
 
   <!-- Panel: Code Mirror -->
@@ -64,8 +71,15 @@
     <h2 data-i18n="h-code-mirror">Code Mirror</h2>
     <p class="hint" data-i18n="hint-code-mirror">Paste a snippet of code. It'll tell you, in first person, how it feels.</p>
     <textarea data-input="code-mirror" maxlength="600" placeholder="function totallyNormal(x) { return x + x + x; }"></textarea>
+    <div class="action-row">
+      <button class="example-btn" data-example="code-mirror"><span data-i18n="example-btn">✨ Try an example</span></button>
+      <span class="kbd-hint" data-i18n="kbd-hint">Enter to submit · Shift+Enter for a new line</span>
+    </div>
     <button class="go-btn" data-go="code-mirror"><span data-i18n="btn-code-mirror">Ask how it feels →</span></button>
-    <div class="result" data-result="code-mirror" hidden></div>
+    <div class="result" data-result="code-mirror" hidden>
+      <p class="result-text" data-result-text></p>
+      <button class="copy-btn" data-copy><span data-i18n="copy-btn">📋 Copy</span></button>
+    </div>
   </section>
 
   <!-- Panel: Never-Launch Excuse -->
@@ -73,8 +87,15 @@
     <h2 data-i18n="h-launch-excuse">Never-Launch Excuse</h2>
     <p class="hint" data-i18n="hint-launch-excuse">Tell it about that project you never publish.</p>
     <textarea data-input="launch-excuse" maxlength="600" data-i18n-placeholder="placeholder-launch" placeholder="Ex: a habit-tracking app I've been building for 8 months and never shipped"></textarea>
+    <div class="action-row">
+      <button class="example-btn" data-example="launch-excuse"><span data-i18n="example-btn">✨ Try an example</span></button>
+      <span class="kbd-hint" data-i18n="kbd-hint">Enter to submit · Shift+Enter for a new line</span>
+    </div>
     <button class="go-btn" data-go="launch-excuse"><span data-i18n="btn-launch-excuse">Give me the perfect excuse →</span></button>
-    <div class="result" data-result="launch-excuse" hidden></div>
+    <div class="result" data-result="launch-excuse" hidden>
+      <p class="result-text" data-result-text></p>
+      <button class="copy-btn" data-copy><span data-i18n="copy-btn">📋 Copy</span></button>
+    </div>
   </section>
 
 </main>

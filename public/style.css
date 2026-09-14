@@ -217,6 +217,37 @@ textarea:focus {
   border-color: var(--accent);
 }
 
+.action-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.example-btn {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  padding: 8px 12px;
+  border: 2px dashed var(--ink);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background 0.12s ease;
+}
+
+.example-btn:hover {
+  background: rgba(0,0,0,0.05);
+}
+
+.kbd-hint {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: #888;
+}
+
 .go-btn {
   font-family: var(--font-display);
   font-weight: 700;
@@ -247,8 +278,30 @@ textarea:focus {
   background: #fffbe6;
   font-size: 1.05rem;
   line-height: 1.5;
+  animation: reveal 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.result-text {
+  margin: 0 0 10px;
   white-space: pre-wrap;
-  animation: pop 0.3s ease;
+}
+
+.copy-btn {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  padding: 6px 10px;
+  border: 2px solid var(--ink);
+  border-radius: 6px;
+  background: var(--paper);
+  cursor: pointer;
+}
+
+.copy-btn:hover { background: var(--accent-2); }
+
+@keyframes reveal {
+  0% { opacity: 0; transform: scale(0.85) translateY(10px) rotate(-1deg); }
+  60% { opacity: 1; transform: scale(1.03) translateY(-2px) rotate(0.5deg); }
+  100% { opacity: 1; transform: scale(1) translateY(0) rotate(0deg); }
 }
 
 .result.error {
@@ -256,6 +309,8 @@ textarea:focus {
   border-color: #b00020;
   color: #7a0015;
 }
+
+.result.error .copy-btn { display: none; }
 
 footer {
   text-align: center;

@@ -1,4 +1,4 @@
-// script.js — tabs, persona selection, language switch, and API calls
+// script.js — tabs, persona selection, language switch, examples, copy, and API calls
 
 // ---------- i18n ----------
 const translations = {
@@ -22,10 +22,13 @@ const translations = {
     'placeholder-launch': "Ex: a habit-tracking app I've been building for 8 months and never shipped",
     'btn-launch-excuse': 'Give me the perfect excuse →',
     footer: 'Made for <strong>Burning Token</strong> · NERDCONF · 2026',
-    'empty-input': "Write something first :)",
-    'go-thinking': 'Thinking...',
+    'empty-input': 'Write something first :)',
     'generic-error': 'Something went wrong. Try again.',
     'network-error': "Couldn't reach the server. Try again.",
+    'example-btn': '✨ Try an example',
+    'kbd-hint': 'Enter to submit · Shift+Enter for a new line',
+    'copy-btn': '📋 Copy',
+    'copied-btn': '✅ Copied!',
   },
   es: {
     subtitle: 'Tres máquinas completamente inútiles, hechas con cariño. Elegí una.',
@@ -48,11 +51,52 @@ const translations = {
     'btn-launch-excuse': 'Dame la excusa perfecta →',
     footer: 'Hecho para <strong>Burning Token</strong> · NERDCONF · 2026',
     'empty-input': 'Escribí algo primero :)',
-    'go-thinking': 'Pensando...',
     'generic-error': 'Algo salió mal. Probá de nuevo.',
     'network-error': 'No se pudo conectar con el servidor. Probá de nuevo.',
+    'example-btn': '✨ Probar un ejemplo',
+    'kbd-hint': 'Enter para enviar · Shift+Enter para salto de línea',
+    'copy-btn': '📋 Copiar',
+    'copied-btn': '✅ ¡Copiado!',
   },
 };
+
+// ---------- Example inputs per mode/language ----------
+const examples = {
+  excuses: {
+    en: "I missed the meeting because my cat unplugged my laptop mid-presentation.",
+    es: "Falté a la reunión porque mi gato desenchufó la notebook en medio de la presentación.",
+  },
+  'code-mirror': {
+    en: "function totallyFine(arr) {\n  for (var i = 0; i < arr.length; i++) {\n    for (var j = 0; j < arr.length; j++) {\n      if (arr[i] === arr[j] && i !== j) console.log('dup');\n    }\n  }\n}",
+    es: "function totallyFine(arr) {\n  for (var i = 0; i < arr.length; i++) {\n    for (var j = 0; j < arr.length; j++) {\n      if (arr[i] === arr[j] && i !== j) console.log('dup');\n    }\n  }\n}",
+  },
+  'launch-excuse': {
+    en: "A habit-tracking app I've been building for 8 months and never shipped.",
+    es: "Una app de hábitos que hago hace 8 meses y nunca subí a la tienda.",
+  },
+};
+
+// ---------- Playful "thinking" messages ----------
+const thinkingMessages = {
+  excuses: {
+    en: { jefe: 'Consulting the boss...', abuela: 'Summoning grandma...', ia: 'Questioning existence...' },
+    es: { jefe: 'Consultando al jefe...', abuela: 'Invocando a la abuela...', ia: 'Cuestionando la existencia...' },
+  },
+  'code-mirror': {
+    en: ["Reading the code's diary...", "Checking its feelings...", "Opening old wounds..."],
+    es: ['Leyendo el diario del código...', 'Revisando sus sentimientos...', 'Reabriendo heridas viejas...'],
+  },
+  'launch-excuse': {
+    en: ['Inventing a good excuse...', 'Building rationalizations...', 'Negotiating with procrastination...'],
+    es: ['Inventando una buena excusa...', 'Construyendo justificaciones...', 'Negociando con la procrastinación...'],
+  },
+};
+
+function getThinkingMessage(mode, lang, persona) {
+  const entry = thinkingMessages[mode][lang];
+  if (mode === 'excuses') return entry[persona] || entry.jefe;
+  return entry[Math.floor(Math.random() * entry.length)];
+}
 
 let currentLang = localStorage.getItem('randomModeLang') || 'en';
 
@@ -69,7 +113,6 @@ function applyTranslations(lang) {
     const key = el.dataset.i18nPlaceholder;
     if (translations[lang][key]) el.placeholder = translations[lang][key];
   });
-
   document.querySelectorAll('.lang-btn').forEach((btn) => {
     btn.classList.toggle('active', btn.dataset.lang === lang);
   });
@@ -106,22 +149,62 @@ document.querySelectorAll('.persona-btn').forEach((btn) => {
   });
 });
 
+// ---------- Example buttons ----------
+document.querySelectorAll('.example-btn').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const mode = btn.dataset.example;
+    const textarea = document.querySelector(`textarea[data-input="${mode}"]`);
+    textarea.value = examples[mode][currentLang] || examples[mode].en;
+    textarea.focus();
+  });
+});
+
+// ---------- Enter to submit, Shift+Enter for a new line ----------
+document.querySelectorAll('textarea[data-input]').forEach((textarea) => {
+  textarea.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      const mode = textarea.dataset.input;
+      document.querySelector(`.go-btn[data-go="${mode}"]`).click();
+    }
+    // Shift+Enter: no preventDefault, so the browser inserts the newline as usual.
+  });
+});
+
+// ---------- Copy to clipboard ----------
+document.querySelectorAll('.copy-btn').forEach((btn) => {
+  btn.addEventListener('click', async () => {
+    const resultBox = btn.closest('.result');
+    const text = resultBox.querySelector('[data-result-text]').textContent;
+    try {
+      await navigator.clipboard.writeText(text);
+      const span = btn.querySelector('span');
+      const original = span.textContent;
+      span.textContent = translations[currentLang]['copied-btn'];
+      setTimeout(() => { span.textContent = original; }, 1500);
+    } catch (err) {
+      // Clipboard API unavailable or blocked — fail silently, not critical.
+    }
+  });
+});
+
 // ---------- API calls ----------
 document.querySelectorAll('.go-btn').forEach((btn) => {
   btn.addEventListener('click', async () => {
     const mode = btn.dataset.go;
     const textarea = document.querySelector(`textarea[data-input="${mode}"]`);
     const resultBox = document.querySelector(`[data-result="${mode}"]`);
+    const resultText = resultBox.querySelector('[data-result-text]');
     const input = textarea.value.trim();
 
     if (!input) {
-      showResult(resultBox, translations[currentLang]['empty-input'], true);
+      showResult(resultBox, resultText, translations[currentLang]['empty-input'], true);
       return;
     }
 
     btn.disabled = true;
     const originalHTML = btn.innerHTML;
-    btn.textContent = translations[currentLang]['go-thinking'];
+    btn.textContent = getThinkingMessage(mode, currentLang, selectedPersona);
     resultBox.hidden = true;
 
     try {
@@ -137,12 +220,12 @@ document.querySelectorAll('.go-btn').forEach((btn) => {
       const data = await res.json();
 
       if (!res.ok) {
-        showResult(resultBox, data.error || translations[currentLang]['generic-error'], true);
+        showResult(resultBox, resultText, data.error || translations[currentLang]['generic-error'], true);
       } else {
-        showResult(resultBox, data.result, false);
+        showResult(resultBox, resultText, data.result, false);
       }
     } catch (err) {
-      showResult(resultBox, translations[currentLang]['network-error'], true);
+      showResult(resultBox, resultText, translations[currentLang]['network-error'], true);
     } finally {
       btn.disabled = false;
       btn.innerHTML = originalHTML;
@@ -150,8 +233,13 @@ document.querySelectorAll('.go-btn').forEach((btn) => {
   });
 });
 
-function showResult(box, text, isError) {
-  box.textContent = text;
+function showResult(box, textEl, text, isError) {
+  textEl.textContent = text;
   box.hidden = false;
+  box.classList.remove('error'); // reset to restart the reveal animation
   box.classList.toggle('error', isError);
+  // restart CSS animation even if the box was already visible
+  box.style.animation = 'none';
+  void box.offsetWidth;
+  box.style.animation = '';
 }
