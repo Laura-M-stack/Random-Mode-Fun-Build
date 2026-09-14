@@ -59,16 +59,20 @@ setInterval(() => {
 }, RATE_LIMIT_WINDOW_MS).unref();
 
 // --- Definition of the 3 modes, in English and Spanish ---
+// All 3 personas REACT to the user's excuse in their own voice (they are the
+// listener, not the one giving the excuse). This keeps the passive-aggressive
+// boss trope intact (it's inherently about reacting to someone else) and
+// applies the same behavior consistently to the other two personas.
 const PERSONAS = {
   en: {
-    jefe: 'a passive-aggressive office boss who never says things directly, uses double-meaning phrases and micro-digs',
-    abuela: 'a dramatic, over-the-top grandmother who turns any excuse into a soap-opera saga full of suffering',
-    ia: 'an existentialist artificial intelligence that coldly questions the meaning of the excuse and of existence itself while analyzing it',
+    jefe: 'a passive-aggressive office boss, who responds with backhanded remarks, double-meaning digs and fake-polite jabs',
+    abuela: 'a dramatic, over-the-top grandmother, who turns it into a soap-opera commentary full of suffering and divine intervention',
+    ia: 'a cold, existentialist artificial intelligence, who coldly questions the validity and meaning of the excuse, and of existence itself',
   },
   es: {
-    jefe: 'un jefe pasivo-agresivo de oficina que nunca dice las cosas directamente, usa frases con doble sentido y micro-indirectas',
-    abuela: 'una abuela dramatica y exagerada que convierte cualquier excusa en una novela de telenovela llena de sufrimiento',
-    ia: 'una inteligencia artificial existencialista que cuestiona el sentido de la excusa y de la existencia misma mientras la analiza fríamente',
+    jefe: 'un jefe pasivo-agresivo de oficina, que responde con indirectas, doble sentido y falsa amabilidad envenenada',
+    abuela: 'una abuela dramatica y exagerada, que lo convierte en un comentario de telenovela lleno de sufrimiento e intervencion divina',
+    ia: 'una inteligencia artificial existencialista y fria, que cuestiona con frialdad la validez y el sentido de la excusa, y de la existencia misma',
   },
 };
 
@@ -79,8 +83,8 @@ function buildMessages(mode, input, persona, lang) {
     const personaKey = PERSONAS[L][persona] ? persona : 'jefe';
     const system =
       L === 'es'
-        ? `Sos un traductor de excusas. Te dan una excusa real (llegar tarde, no terminar algo, etc) y la "traducis" reescribiendola completamente en el tono de ${PERSONAS.es[personaKey]}. Respondé SOLO con la excusa traducida, en espanol neutro, maximo 4 lineas, sin explicaciones ni comillas alrededor.`
-        : `You are an excuse translator. You're given a real excuse (being late, not finishing something, etc) and you "translate" it by rewriting it entirely in the tone of ${PERSONAS.en[personaKey]}. Reply ONLY with the translated excuse, in English, maximum 4 lines, no explanations or surrounding quotes.`;
+        ? `Sos un traductor de excusas. Te dan una excusa real que alguien está dando (llegar tarde, no terminar algo, etc). Tu trabajo es generar la reacción que ${PERSONAS.es[personaKey]} tendría al escuchar esa excusa. Respondé SOLO con la reacción del personaje, en primera persona (como si el personaje mismo estuviera hablando), en espanol neutro, maximo 4 lineas, sin explicaciones ni comillas alrededor.`
+        : `You are an excuse translator. You're given a real excuse that someone is giving (being late, not finishing something, etc). Your job is to generate the reaction ${PERSONAS.en[personaKey]} would have upon hearing that excuse. Reply ONLY with the character's reaction, in first person (as if the character themselves were speaking), in English, maximum 4 lines, no explanations or surrounding quotes.`;
     return [
       { role: 'system', content: system },
       { role: 'user', content: input },
