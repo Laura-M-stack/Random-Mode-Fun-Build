@@ -163,7 +163,16 @@ function applyTranslations(lang) {
 }
 
 document.querySelectorAll('.lang-btn').forEach((btn) => {
-  btn.addEventListener('click', () => applyTranslations(btn.dataset.lang));
+  btn.addEventListener('click', () => {
+    const alreadyActive = btn.classList.contains('active');
+    applyTranslations(btn.dataset.lang);
+    // Same reasoning as switching tabs: a result generated in one language
+    // (or an example typed in that language) shouldn't linger after the
+    // language changes underneath it.
+    if (!alreadyActive) {
+      panels.forEach((p) => resetPanel(p.dataset.panel));
+    }
+  });
 });
 
 applyTranslations(currentLang);
