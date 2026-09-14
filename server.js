@@ -167,12 +167,24 @@ app.post('/api/generate', async (req, res) => {
       model: MODEL,
       messages,
       temperature: 0.9,
-      max_tokens: 220,
+      max_tokens: 400,
     });
 
-    const text = completion.choices?.[0]?.message?.content?.trim();
+    const choice = completion.choices?.[0];
+    let text = choice?.message?.content?.trim();
     if (!text) {
       return res.status(502).json({ error: E.noText });
+    }
+
+    // Safety net: if the model still got cut off mid-sentence (finish_reason
+    // === 'length'), trim to the last complete sentence instead of showing a
+    // half-finished word. With max_tokens raised to 400 this should be rare,
+    // but a 4-line reply should never render broken.
+    if (choice?.finish_reason === 'length') {
+      const lastPunct = Math.max(text.lastIndexOf('.'), text.lastIndexOf('!'), text.lastIndexOf('?'));
+      if (lastPunct > 20) {
+        text = text.slice(0, lastPunct + 1);
+      }
     }
 
     return res.json({ result: text });
