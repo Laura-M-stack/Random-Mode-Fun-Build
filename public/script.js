@@ -172,6 +172,19 @@ applyTranslations(currentLang);
 const tabs = document.querySelectorAll('.tab');
 const panels = document.querySelectorAll('.mode-panel');
 
+// Clears a mode's textarea and hides its result box — used whenever the
+// context changes enough that leftover text/results would be confusing
+// (switching tabs, switching persona, or after a successful generation).
+function resetPanel(mode) {
+  const textarea = document.querySelector(`textarea[data-input="${mode}"]`);
+  const resultBox = document.querySelector(`[data-result="${mode}"]`);
+  if (textarea) textarea.value = '';
+  if (resultBox) {
+    resultBox.hidden = true;
+    resultBox.classList.remove('error');
+  }
+}
+
 tabs.forEach((tab) => {
   tab.addEventListener('click', () => {
     const mode = tab.dataset.mode;
@@ -180,6 +193,9 @@ tabs.forEach((tab) => {
       t.setAttribute('aria-selected', t === tab ? 'true' : 'false');
     });
     panels.forEach((p) => p.classList.toggle('active', p.dataset.panel === mode));
+    // Reset every panel so no tab shows leftover input/results from a
+    // previous round when you come back to it.
+    panels.forEach((p) => resetPanel(p.dataset.panel));
   });
 });
 
@@ -190,6 +206,7 @@ document.querySelectorAll('.persona-btn').forEach((btn) => {
     document.querySelectorAll('.persona-btn').forEach((b) => b.classList.remove('active'));
     btn.classList.add('active');
     selectedPersona = btn.dataset.persona;
+    resetPanel('excuses');
   });
 });
 
