@@ -6,15 +6,21 @@ Three completely useless machines, made with love. One app, three AI interaction
 
 | | Tool | What it does |
 |---|---|---|
-| 🎭 | **Excuse Translator** | Turn a real excuse into the voice of an exaggerated character (passive-aggressive boss, dramatic grandma, existentialist AI). |
+| 🎭 | **Excuse Translator** | Give it a real excuse and get the reaction it would trigger from an exaggerated character (passive-aggressive boss, dramatic grandma, existentialist AI). |
 | 💻 | **Code Mirror** | Paste a code snippet and read, in first person, how it feels about how it was written. |
-| 🚀 | **Never-Launch Excuse** | Tell it about your unfinished side project and get the perfect, absurd excuse to keep never shipping it. |
+| 🚀 | **Never-Launch Excuse** | Tell it about your unfinished side project and get, in first person, the perfect absurd excuse for never shipping it. |
 
 Includes an EN/ES language switch (top-right) — both the interface and the AI-generated responses follow the selected language.
 
+**Nice touches for judges trying it quickly:**
+- **✨ Try an example** button on each panel — no need to think of an input to test it.
+- **Enter to submit, Shift+Enter for a new line** (matches Slack/Discord/ChatGPT conventions).
+- **📋 Copy** button on every result.
+- Mode-specific, in-character "thinking..." messages instead of a generic spinner.
+
 ## Try it
 
-🔗 **[Open Random Mode](https://YOUR-RENDER-URL.onrender.com)** — no login or install required, works from any browser.
+🔗 **[Open Random Mode](https://random-mode.onrender.com/)** — no login or install required, works from any browser.
 
 Pick a tab, type something, hit the button — the response appears in a few seconds.
 
@@ -32,6 +38,7 @@ All the code in this repository (frontend, backend, the three prompts, and their
 - **Hosting:** Render (Free tier).
 - No database, no authentication — a deliberate choice to minimize points of failure in a short demo.
 - Basic in-memory rate limiting (20 requests / 10 min per IP) to prevent abuse of the free inference quota.
+- Generous token budget per response plus a safe-truncation fallback (trims to the last full sentence) so a reply is never cut off mid-word.
 
 ## Run it locally
 
